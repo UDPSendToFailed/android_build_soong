@@ -122,6 +122,19 @@ func (lto *lto) flags(ctx ModuleContext, flags Flags) Flags {
 		// Utilize unified LTO for greater optimization than ThinLTO with a
 		// lesser compile time hit than full lto
 		ltoCFlags = append(ltoCFlags, "-funified-lto")
+		// Enable Polly globally
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-parallel")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-ast-use-context")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-invariant-load-hoisting")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-run-inliner")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-loopfusion-greedy=1")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-reschedule=1")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-postopts=1")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-omp-backend=LLVM")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-scheduling=dynamic")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-scheduling-chunksize=1")
+		ltoCOnlyFlags = append(ltoCOnlyFlags, "-mllvm -polly-vectorizer=stripmine")
 
 		if Bool(lto.Properties.Whole_program_vtables) {
 			ltoCFlags = append(ltoCFlags, "-fwhole-program-vtables")
